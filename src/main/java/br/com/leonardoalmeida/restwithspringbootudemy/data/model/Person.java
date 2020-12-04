@@ -1,4 +1,4 @@
-package br.com.leonardoalmeida.restwithspringbootudemy.model;
+package br.com.leonardoalmeida.restwithspringbootudemy.data.model;
 
 import javax.persistence.*;
 
