@@ -1,7 +1,9 @@
 package br.com.leonardoalmeida.restwithspringbootudemy.services;
 
+import br.com.leonardoalmeida.restwithspringbootudemy.converter.DozerConverter;
+import br.com.leonardoalmeida.restwithspringbootudemy.data.vo.PersonVO;
 import br.com.leonardoalmeida.restwithspringbootudemy.exception.ResourceNotFoundException;
-import br.com.leonardoalmeida.restwithspringbootudemy.model.Person;
+import br.com.leonardoalmeida.restwithspringbootudemy.data.model.Person;
 import br.com.leonardoalmeida.restwithspringbootudemy.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,11 +16,22 @@ public class PersonServices {
     @Autowired
     private PersonRepository repository;
 
-    public Person create(Person person) {
-        return repository.save(person);
+    public PersonVO create(PersonVO person) {
+        var entity = DozerConverter.parseObject(person, Person.class);
+        return DozerConverter.parseObject(repository.save(entity), PersonVO.class);
     }
 
-    public Person update(Person person) {
+    public List<PersonVO> findAll() {
+        return DozerConverter.parseListObjects(repository.findAll(), PersonVO.class);
+    }
+
+    public PersonVO findById(Long id) {
+        var entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
+        return DozerConverter.parseObject(entity, PersonVO.class);
+    }
+
+    public PersonVO update(PersonVO person) {
 
         Person entity = repository.findById(person.getId()).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
         entity.setFirstName(person.getFirstName());
@@ -27,21 +40,12 @@ public class PersonServices {
         entity.setGender(person.getGender());
         repository.save(entity);
 
-        return entity;
+        return DozerConverter.parseObject(entity, PersonVO.class);
     }
 
     public void delete(Long id) {
         Person entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
         repository.delete(entity);
-    }
-
-    public List<Person> findAll() {
-        return repository.findAll();
-    }
-
-    public Person findById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
     }
 
 
