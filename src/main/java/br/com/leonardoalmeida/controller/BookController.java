@@ -5,6 +5,10 @@ import br.com.leonardoalmeida.services.BookServices;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,8 +22,15 @@ public class BookController {
 
     @ApiOperation("Find all books")
     @GetMapping
-    public List<BookVO> findAll() {
-        return services.findAll();
+    public Page<BookVO> findAll(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "limit", defaultValue = "12") int limit,
+            @RequestParam(value = "order", defaultValue = "asc") String order
+    ) {
+        var orderDirection = "desc".equalsIgnoreCase(order) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, limit, Sort.by(orderDirection, "title"));
+        return services.findAll(pageable);
+
     }
 
     @ApiOperation("Find one book by id")

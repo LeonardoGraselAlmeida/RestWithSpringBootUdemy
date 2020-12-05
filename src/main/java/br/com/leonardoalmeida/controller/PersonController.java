@@ -5,9 +5,11 @@ import br.com.leonardoalmeida.services.PersonServices;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Api
 @RestController
@@ -17,10 +19,29 @@ public class PersonController {
     @Autowired
     private PersonServices services;
 
-    @ApiOperation("Find all person")
+    @ApiOperation("Find all people")
     @GetMapping
-    public List<PersonVO> findAll() {
-        return services.findAll();
+    public Page<PersonVO> findAll(
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "limit", defaultValue = "12") int limit,
+            @RequestParam(value = "order", defaultValue = "asc") String order
+    ) {
+        var orderDirection = "desc".equalsIgnoreCase(order) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, limit, Sort.by(orderDirection, "firstName"));
+        return services.findAll(pageable);
+    }
+
+    @ApiOperation("Find all people")
+    @GetMapping(value = "/findPersonByName/{firstName}")
+    public Page<PersonVO> findPersonByName(
+            @PathVariable("firstName") String firstName,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "limit", defaultValue = "12") int limit,
+            @RequestParam(value = "order", defaultValue = "asc") String order
+    ) {
+        var orderDirection = "desc".equalsIgnoreCase(order) ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, limit, Sort.by(orderDirection, "firstName"));
+        return services.findPersonByName(firstName, pageable);
     }
 
     @ApiOperation("Find a specific person by your ID")
