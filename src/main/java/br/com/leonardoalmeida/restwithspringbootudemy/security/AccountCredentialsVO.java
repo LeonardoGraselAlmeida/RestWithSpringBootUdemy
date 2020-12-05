@@ -1,8 +1,11 @@
 package br.com.leonardoalmeida.restwithspringbootudemy.security;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import java.io.Serializable;
 import java.util.Objects;
 
+@JsonPropertyOrder({"username", "password"})
 public class AccountCredentialsVO implements Serializable {
 
     private static final long serialVersionUID = 1L;

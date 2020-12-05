@@ -1,12 +1,13 @@
 package br.com.leonardoalmeida.restwithspringbootudemy.services;
 
 import br.com.leonardoalmeida.restwithspringbootudemy.converter.DozerConverter;
+import br.com.leonardoalmeida.restwithspringbootudemy.data.model.Person;
 import br.com.leonardoalmeida.restwithspringbootudemy.data.vo.PersonVO;
 import br.com.leonardoalmeida.restwithspringbootudemy.exception.ResourceNotFoundException;
-import br.com.leonardoalmeida.restwithspringbootudemy.data.model.Person;
 import br.com.leonardoalmeida.restwithspringbootudemy.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -48,5 +49,13 @@ public class PersonServices {
         repository.delete(entity);
     }
 
-
+    @Transactional
+    public PersonVO disablePerson(Long id) {
+        repository.disablePerson(id);
+        Person entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No records found for this ID"));
+        return DozerConverter.parseObject(entity, PersonVO.class);
+    }
 }
+
+
+

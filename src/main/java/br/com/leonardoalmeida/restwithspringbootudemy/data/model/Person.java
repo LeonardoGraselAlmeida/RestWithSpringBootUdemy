@@ -1,9 +1,10 @@
 package br.com.leonardoalmeida.restwithspringbootudemy.data.model;
 
 import javax.persistence.*;
-
-;import java.io.Serializable;
+import java.io.Serializable;
 import java.util.Objects;
+
+;
 
 
 @Entity
@@ -21,11 +22,14 @@ public class Person implements Serializable {
     @Column(name = "last_name", nullable = false, length = 80)
     private String lastName;
 
-    @Column(nullable = false, length = 100)
+    @Column(name = "address", nullable = false, length = 100)
     private String address;
 
-    @Column(nullable = false, length = 6)
+    @Column(name = "gender", nullable = false, length = 6)
     private String gender;
+
+    @Column(name = "enabled", nullable = false, length = 6)
+    private Boolean enabled;
 
     public Person() {
     }
@@ -70,20 +74,24 @@ public class Person implements Serializable {
         this.gender = gender;
     }
 
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Person)) return false;
         Person person = (Person) o;
-        return getId().equals(person.getId()) &&
-                getFirstName().equals(person.getFirstName()) &&
-                getLastName().equals(person.getLastName()) &&
-                getAddress().equals(person.getAddress()) &&
-                getGender().equals(person.getGender());
+        return getId().equals(person.getId()) && getFirstName().equals(person.getFirstName()) && getLastName().equals(person.getLastName()) && getAddress().equals(person.getAddress()) && getGender().equals(person.getGender()) && getEnabled().equals(person.getEnabled());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getFirstName(), getLastName(), getAddress(), getGender());
+        return Objects.hash(getId(), getFirstName(), getLastName(), getAddress(), getGender(), getEnabled());
     }
 }

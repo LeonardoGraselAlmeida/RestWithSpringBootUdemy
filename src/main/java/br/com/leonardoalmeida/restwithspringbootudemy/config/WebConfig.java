@@ -1,7 +1,6 @@
 package br.com.leonardoalmeida.restwithspringbootudemy.config;
 
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 public class WebConfig extends WebMvcConfigurationSupport {

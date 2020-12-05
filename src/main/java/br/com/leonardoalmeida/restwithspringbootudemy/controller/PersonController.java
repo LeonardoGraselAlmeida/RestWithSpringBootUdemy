@@ -17,33 +17,39 @@ public class PersonController {
     @Autowired
     private PersonServices services;
 
-    @ApiOperation("Find all Person")
+    @ApiOperation("Find all person")
     @GetMapping
     public List<PersonVO> findAll() {
         return services.findAll();
     }
 
-    @ApiOperation("Find one person by id")
+    @ApiOperation("Find a specific person by your ID")
     @GetMapping(value = "/{id}")
     public PersonVO findById(@PathVariable("id") Long id) {
         return services.findById(id);
     }
 
-    @ApiOperation("Create new person")
+    @ApiOperation("Create a new person")
     @PostMapping
     public PersonVO create(@RequestBody PersonVO person) {
         return services.create(person);
     }
 
-    @ApiOperation("Update infos of person")
+    @ApiOperation("Update a specific person by your ID")
     @PutMapping
     public PersonVO update(@RequestBody PersonVO person) {
         return services.update(person);
     }
 
-    @ApiOperation("Delete one person by id")
+    @ApiOperation("Delete a specific person by your ID")
     @DeleteMapping(value = "/{id}")
     public void delete(@PathVariable("id") Long id) {
         services.delete(id);
+    }
+
+    @ApiOperation("Disable a specific person by your ID")
+    @PatchMapping(value = "/{id}")
+    public PersonVO disableById(@PathVariable("id") Long id) {
+        return services.disablePerson(id);
     }
 }
