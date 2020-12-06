@@ -1,9 +1,14 @@
 package br.com.leonardoalmeida;
 
+import br.com.leonardoalmeida.config.FileStorageConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 @SpringBootApplication
+@EnableConfigurationProperties({
+        FileStorageConfig.class
+})
 public class Startup {
 
     public static void main(String[] args) {
