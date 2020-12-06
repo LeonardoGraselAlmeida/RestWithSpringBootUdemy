@@ -1,13 +1,10 @@
 package br.com.leonardoalmeida.data.vo;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
 public class PersonVO implements Serializable {
 
-
-    @Serial
     private static final long serialVersionUID = 1L;
 
     private Long id;
