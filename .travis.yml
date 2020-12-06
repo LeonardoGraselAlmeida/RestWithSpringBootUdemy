@@ -1,0 +1,16 @@
+language: bash
+services: docker
+
+script:
+  - docker-compose build
+before_deploy:
+  - docker login --username "${DOCKER_USERNAME}" --password "${DOCKER_PASSWORD}"
+deploy:
+  provider: script
+  script: 
+    docker push leonardograselalmeida/mysql-rest-with-spring-boot-udemy
+    docker push leonardograselalmeida/rest-with-spring-boot-udemy
+  on:
+    branch: master
+notifications:
+  email: false
